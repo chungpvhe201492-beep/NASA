@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NASA – Khám Phá Vũ Trụ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #010b1a;
+      --surface: #0a1628;
+      --accent: #e8672a;
+      --blue: #1e90ff;
+      --text: #c9d9f0;
+      --muted: #6b8cae;
+      --white: #f0f6ff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── Stars background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 35%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 45%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 92% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 40% 30%, rgba(200,220,255,0.8) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 75% 15%, rgba(200,220,255,0.6) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 60px 0 40px;
+      border-bottom: 1px solid rgba(30,144,255,0.2);
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .nasa-logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .logo-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 12px;
+      color: white;
+      letter-spacing: 1px;
+      box-shadow: 0 0 20px rgba(232,103,42,0.5);
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: var(--white);
+      letter-spacing: 2px;
+      line-height: 1.1;
+    }
+
+    h1 span { color: var(--accent); }
+
+    /* ── Sections ── */
+    section {
+      padding: 48px 0 32px;
+      border-bottom: 1px solid rgba(30,144,255,0.1);
+      animation: fadeUp 0.7s ease both;
+    }
+
+    section:nth-child(2) { animation-delay: 0.1s; }
+    section:nth-child(3) { animation-delay: 0.2s; }
+    section:nth-child(4) { animation-delay: 0.3s; }
+    section:nth-child(5) { animation-delay: 0.4s; }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text);
+      max-width: 720px;
+    }
+
+    /* ── About ── */
+    .about-desc {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      border-left: 2px solid var(--accent);
+      padding-left: 20px;
+      color: var(--text);
+    }
+
+    /* ── Quick Facts grid ── */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .fact-card {
+      background: var(--surface);
+      border: 1px solid rgba(30,144,255,0.2);
+      border-radius: 8px;
+      padding: 18px 16px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .fact-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .fact-label {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .fact-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* ── Astronauts list ── */
+    h3 {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      padding: 8px 0 8px 24px;
+      position: relative;
+      color: var(--text);
+      font-size: 0.97rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.8rem;
+      top: 9px;
+    }
+
+    /* ── Missions ranked list ── */
+    .mission-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      display: inline-block;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(30,144,255,0.4);
+      padding-bottom: 4px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .mission-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    ol {
+      padding-left: 20px;
+    }
+
+    ol li {
+      padding: 8px 0;
+      font-size: 0.97rem;
+      color: var(--text);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    ol li:first-child {
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    ol li strong {
+      color: var(--accent);
+    }
+
+    /* ── Gallery ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      border: 1px solid rgba(30,144,255,0.2);
+      aspect-ratio: 4/3;
+      background: var(--surface);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .gallery-item:hover {
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+
+    .gallery-item:hover img { opacity: 1; }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(1,11,26,0.85));
+      padding: 16px 10px 8px;
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 32px 0 48px;
+      text-align: center;
+    }
+
+    .back-top {
+      color: var(--blue);
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid rgba(30,144,255,0.3);
+      padding: 10px 24px;
+      border-radius: 4px;
+      transition: background 0.3s, color 0.3s;
+      display: inline-block;
+    }
+
+    .back-top:hover {
+      background: var(--blue);
+      color: var(--bg);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header id="top">
+    <div class="nasa-logo">
+      <div class="logo-icon">NASA</div>
+      <h1>Khám Phá <span>Vũ Trụ</span></h1>
+    </div>
+  </header>
+
+  <!-- About -->
+  <section>
+    <h2>Giới Thiệu</h2>
+    <p class="about-desc">
+      NASA (Cơ quan Hàng không và Vũ trụ Quốc gia Hoa Kỳ) là tổ chức hàng đầu thế giới trong lĩnh vực
+      khám phá không gian, nghiên cứu khoa học vũ trụ và phát triển công nghệ hàng không tiên tiến.
+      Được thành lập năm 1958, NASA đã đưa con người lên Mặt Trăng, phóng các tàu thăm dò đến
+      tận rìa hệ Mặt Trời và không ngừng mở rộng hiểu biết của nhân loại về vũ trụ bao la.
+    </p>
+  </section>
+
+  <!-- Quick Facts -->
+  <section>
+    <h2>Thông Tin Nhanh</h2>
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-label">Thành lập</div>
+        <div class="fact-value">1958</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-label">Trụ sở</div>
+        <div class="fact-value">Washington D.C.</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-label">Nhân viên</div>
+        <div class="fact-value">18.000+</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-label">Sứ mệnh đã thực hiện</div>
+        <div class="fact-value">150+</div>
+      </div>
+    </div>
+
+    <br/>
+    <h3>Phi Hành Gia Huyền Thoại</h3>
+    <ul>
+      <li>Neil Armstrong – Người đầu tiên đặt chân lên Mặt Trăng (1969)</li>
+      <li>Buzz Aldrin – Phi hành gia Apollo 11</li>
+      <li>Sally Ride – Người phụ nữ Mỹ đầu tiên lên vũ trụ</li>
+      <li>Chris Hadfield – Chỉ huy Trạm Vũ Trụ Quốc Tế ISS</li>
+    </ul>
+  </section>
+
+  <!-- Top Missions -->
+  <section>
+    <a class="mission-link" href="https://www.nasa.gov/missions" target="_blank">▸ Các Sứ Mệnh Vĩ Đại Nhất Của NASA</a>
+    <ol>
+      <li><strong>Apollo 11</strong> – Chuyến bay đầu tiên đưa con người lên Mặt Trăng</li>
+      <li>Chương trình Voyager – Tàu thăm dò đến vùng không gian liên sao</li>
+      <li>Kính thiên văn Hubble – Nhìn vào 13 tỷ năm lịch sử vũ trụ</li>
+      <li>Mars Perseverance Rover – Tìm kiếm sự sống trên Sao Hoả</li>
+      <li>Kính thiên văn James Webb – Kính thiên văn không gian mạnh nhất lịch sử</li>
+    </ol>
+  </section>
+
+  <!-- Gallery -->
+  <section>
+    <h2>Bộ Sưu Tập Hình Ảnh</h2>
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Aldrin_Apollo_11_original.jpg/640px-Aldrin_Apollo_11_original.jpg" alt="Apollo 11"/>
+        <div class="gallery-caption">Apollo 11 – Mặt Trăng</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/NASA_Mars_Rover.jpg/640px-NASA_Mars_Rover.jpg"
+             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Perseverance_rover_landing_location.jpg/640px-Perseverance_rover_landing_location.jpg'"
+             alt="Mars Rover"/>
+        <div class="gallery-caption">Perseverance – Sao Hoả</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/HST-SM4.jpeg/640px-HST-SM4.jpeg" alt="Hubble"/>
+        <div class="gallery-caption">Kính Hubble – Quỹ đạo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <a class="back-top" href="#top">↑ Lên đầu trang</a>
+  </footer>
+
+</div>
+</body>
+</html>
